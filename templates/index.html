@@ -237,6 +237,8 @@
     </div>
     
     <script>
+        const defaultBackground = "url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80')";
+
         function getWeather() {
             const city = document.getElementById('cityInput').value.trim();
             
@@ -290,8 +292,8 @@
             document.getElementById('sunset').textContent = data.sunset;
             document.getElementById('description').textContent = data.description;
             
-            // Use a simple fallback background image for the app
-            document.getElementById('backgroundLayer').style.backgroundImage = "url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80')";
+            const backgroundUrl = data.background_image ? `url('${data.background_image}')` : defaultBackground;
+            document.getElementById('backgroundLayer').style.backgroundImage = backgroundUrl;
             document.getElementById('overlay').style.display = 'block';
             
             document.getElementById('weatherBox').classList.add('active');
@@ -303,7 +305,7 @@
             document.getElementById('error').classList.add('active');
             document.getElementById('weatherBox').classList.remove('active');
             // Reset background to the default fallback image
-            document.getElementById('backgroundLayer').style.backgroundImage = "url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80')";
+            document.getElementById('backgroundLayer').style.backgroundImage = defaultBackground;
             document.getElementById('overlay').style.display = 'none';
         }
         
