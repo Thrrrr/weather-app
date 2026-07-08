@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import requests
 from datetime import datetime, timezone, timedelta
 import os
-from urllib.parse import quote
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -24,6 +23,21 @@ base_url = "https://api.openweathermap.org/data/2.5/weather?"
 
 if not api_key:
     print("ERROR: OPENWEATHER_API_KEY environment variable not set!")
+
+CITY_IMAGES = {
+    'berlin': 'https://images.unsplash.com/photo-1528728329032-2972f65dfb3f?auto=format&fit=crop&w=1600&q=80',
+    'london': 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1600&q=80',
+    'paris': 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1600&q=80',
+    'tokyo': 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1600&q=80',
+    'new york': 'https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?auto=format&fit=crop&w=1600&q=80',
+}
+
+
+def get_city_background(city_name):
+    if not city_name:
+        return 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80'
+    normalized = city_name.strip().lower()
+    return CITY_IMAGES.get(normalized, 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -75,7 +89,7 @@ def get_weather():
             'sunrise': '--:--:--',
             'sunset': '--:--:--',
             'description': 'Weather unavailable',
-            'background_image': 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80'
+            'background_image': get_city_background(city_name)
         }
     
     # Build the complete URL
@@ -129,7 +143,7 @@ def get_weather():
                 'sunrise': sunrise_time,
                 'sunset': sunset_time,
                 'description': weather_description,
-                'background_image': 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80'
+                'background_image': get_city_background(city_name_display)
             }
             return weather_data
         else:
