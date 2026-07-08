@@ -2,6 +2,10 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import requests
 from datetime import datetime, timezone, timedelta
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-change-this'
