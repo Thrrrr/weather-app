@@ -11,18 +11,38 @@
         
         body {
             font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            transition: background 0.5s ease;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            margin: 0;
         }
         
-        body.has-background {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), center/cover no-repeat;
-            background-attachment: fixed;
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+            z-index: 0;
+            display: none;
+        }
+        
+        .bg-overlay.active {
+            display: block;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
         }
         
         .container {
@@ -146,6 +166,7 @@
     </style>
 </head>
 <body>
+    <div class="bg-overlay" id="bgOverlay"></div>
     <div class="container">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h1>WEATHER APP</h1>
@@ -267,7 +288,7 @@
             // Set background image
             if (data.background_image) {
                 document.body.style.backgroundImage = `url('${data.background_image}')`;
-                document.body.classList.add('has-background');
+                document.getElementById('bgOverlay').classList.add('active');
             }
             
             document.getElementById('weatherBox').classList.add('active');
@@ -279,8 +300,8 @@
             document.getElementById('error').classList.add('active');
             document.getElementById('weatherBox').classList.remove('active');
             // Reset background
-            document.body.style.backgroundImage = '';
-            document.body.classList.remove('has-background');
+            document.body.style.backgroundImage = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            document.getElementById('bgOverlay').classList.remove('active');
         }
         
         // Allow Enter key to search
