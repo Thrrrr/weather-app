@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import requests
 from datetime import datetime, timezone, timedelta
 import os
+from urllib.parse import quote
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -18,6 +19,7 @@ VALID_USERS = {
 
 # API key and base URL
 api_key = os.getenv('OPENWEATHER_API_KEY')
+print(f"DEBUG: API Key loaded: {api_key[:10] if api_key else 'NOT FOUND'}...")
 base_url = "https://api.openweathermap.org/data/2.5/weather?"
 
 if not api_key:
@@ -112,7 +114,7 @@ def get_weather():
                 'sunrise': sunrise_time,
                 'sunset': sunset_time,
                 'description': weather_description,
-                'background_image': f"https://source.unsplash.com/1600x900/?{city_name_display}"
+                'background_image': f"https://source.unsplash.com/1600x900/?{quote(city_name_display)}"
             }
             return weather_data
         else:
@@ -121,4 +123,4 @@ def get_weather():
         return {'error': str(e)}
 
 if __name__ == '__main__':
-    app.run(debug=False, port=5000)
+    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
