@@ -30,14 +30,49 @@ CITY_IMAGES = {
     'paris': 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1600&q=80',
     'tokyo': 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1600&q=80',
     'new york': 'https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?auto=format&fit=crop&w=1600&q=80',
+    'amsterdam': 'https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=1600&q=80',
+    'barcelona': 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=1600&q=80',
+    'sydney': 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1600&q=80',
+    'melbourne': 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80',
+    'singapore': 'https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?auto=format&fit=crop&w=1600&q=80',
+    'dubai': 'https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1600&q=80',
+    'madrid': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=1600&q=80',
+    'rome': 'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&w=1600&q=80',
+    'vienna': 'https://images.unsplash.com/photo-1516550893923-42d28e5677af?auto=format&fit=crop&w=1600&q=80',
+    'prague': 'https://images.unsplash.com/photo-1541849546-216549ae216d?auto=format&fit=crop&w=1600&q=80',
+    'istanbul': 'https://images.unsplash.com/photo-1527838832700-5059252407fa?auto=format&fit=crop&w=1600&q=80',
+    'cairo': 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1600&q=80',
+    'delhi': 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1600&q=80',
+    'mumbai': 'https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?auto=format&fit=crop&w=1600&q=80',
+    'seoul': 'https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&w=1600&q=80',
+    'bangkok': 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=1600&q=80',
+    'toronto': 'https://images.unsplash.com/photo-1494522855154-9297ac14b55f?auto=format&fit=crop&w=1600&q=80',
+    'los angeles': 'https://images.unsplash.com/photo-1449034446853-66c86144b0ad?auto=format&fit=crop&w=1600&q=80',
+    'san francisco': 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1600&q=80',
+    'chicago': 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1600&q=80',
+    'boston': 'https://images.unsplash.com/photo-1493540554008-8b3f0bf3a0f8?auto=format&fit=crop&w=1600&q=80',
+    'austin': 'https://images.unsplash.com/photo-1518409789868-bf58c5f23e3f?auto=format&fit=crop&w=1600&q=80',
+    'sao paulo': 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=1600&q=80',
+    'mexico city': 'https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&w=1600&q=80',
+    'cape town': 'https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1600&q=80',
+    'nairobi': 'https://images.unsplash.com/photo-1527098322221-0c1dc6f9c8f0?auto=format&fit=crop&w=1600&q=80',
+    'moscow': 'https://images.unsplash.com/photo-1516496636080-14fb876e029d?auto=format&fit=crop&w=1600&q=80',
+    'stockholm': 'https://images.unsplash.com/photo-1509356843151-3e7d1e3f4f1f?auto=format&fit=crop&w=1600&q=80',
+    'copenhagen': 'https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=1600&q=80',
+    'oslo': 'https://images.unsplash.com/photo-1521213181056-8a3c7f8d6f4a?auto=format&fit=crop&w=1600&q=80',
 }
 
 
 def get_city_background(city_name):
     if not city_name:
         return 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80'
+
     normalized = city_name.strip().lower()
-    return CITY_IMAGES.get(normalized, 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80')
+    if normalized in CITY_IMAGES:
+        return CITY_IMAGES[normalized]
+
+    cleaned = normalized.replace(' ', '-')
+    return f'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80&city={cleaned}'
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
