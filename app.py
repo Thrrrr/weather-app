@@ -75,7 +75,7 @@ def get_weather():
             'sunrise': '--:--:--',
             'sunset': '--:--:--',
             'description': 'Weather unavailable',
-            'background_image': f"https://source.unsplash.com/1600x900/?{quote(city_name.strip())}"
+            'background_image': 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80'
         }
     
     # Build the complete URL
@@ -129,7 +129,7 @@ def get_weather():
                 'sunrise': sunrise_time,
                 'sunset': sunset_time,
                 'description': weather_description,
-                'background_image': f"https://source.unsplash.com/1600x900/?{quote(city_name_display)}"
+                'background_image': 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=80'
             }
             return weather_data
         else:
