@@ -17,6 +17,12 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            transition: background 0.5s ease;
+        }
+        
+        body.has-background {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), center/cover no-repeat;
+            background-attachment: fixed;
         }
         
         .container {
@@ -258,6 +264,12 @@
             document.getElementById('sunset').textContent = data.sunset;
             document.getElementById('description').textContent = data.description;
             
+            // Set background image
+            if (data.background_image) {
+                document.body.style.backgroundImage = `url('${data.background_image}')`;
+                document.body.classList.add('has-background');
+            }
+            
             document.getElementById('weatherBox').classList.add('active');
             document.getElementById('error').classList.remove('active');
         }
@@ -266,6 +278,9 @@
             document.getElementById('error').textContent = message;
             document.getElementById('error').classList.add('active');
             document.getElementById('weatherBox').classList.remove('active');
+            // Reset background
+            document.body.style.backgroundImage = '';
+            document.body.classList.remove('has-background');
         }
         
         // Allow Enter key to search

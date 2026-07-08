@@ -16,6 +16,9 @@ VALID_USERS = {
 api_key = os.getenv('OPENWEATHER_API_KEY')
 base_url = "https://api.openweathermap.org/data/2.5/weather?"
 
+if not api_key:
+    print("ERROR: OPENWEATHER_API_KEY environment variable not set!")
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -45,6 +48,9 @@ def logout():
 def get_weather():
     if 'user' not in session:
         return {'error': 'Unauthorized'}, 401
+    
+    if not api_key:
+        return {'error': 'API key not configured'}, 500
     
     city_name = request.form.get('city')
     
@@ -101,7 +107,8 @@ def get_weather():
                 'humidity': current_humidity,
                 'sunrise': sunrise_time,
                 'sunset': sunset_time,
-                'description': weather_description
+                'description': weather_description,
+                'background_image': f"https://source.unsplash.com/1600x900/?{city_name_display}"
             }
             return weather_data
         else:
