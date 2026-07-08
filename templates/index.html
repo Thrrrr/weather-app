@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: #1a1a1a;
+            border: 2px solid #00ff00;
+            padding: 30px;
+            border-radius: 5px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+        }
+        
+        h1 {
+            color: #00ff00;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        input {
+            flex: 1;
+            padding: 12px;
+            background: #2a2a2a;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        input::placeholder {
+            color: #00ff00;
+            opacity: 0.5;
+        }
+        
+        button {
+            padding: 12px 30px;
+            background: #00ff00;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #00cc00;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        
+        .weather-box {
+            display: none;
+        }
+        
+        .weather-box.active {
+            display: block;
+        }
+        
+        .weather-header {
+            text-align: center;
+            color: #00ff00;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #00ff00;
+            padding-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .weather-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            color: #00ff00;
+            border-bottom: 1px solid #333;
+            font-size: 14px;
+        }
+        
+        .weather-item:last-child {
+            border-bottom: none;
+        }
+        
+        .label {
+            color: #888;
+            font-weight: bold;
+        }
+        
+        .value {
+            color: #00ff00;
+            font-weight: bold;
+        }
+        
+        .error {
+            background: #2a0000;
+            color: #ff6b6b;
+            padding: 15px;
+            border: 1px solid #ff6b6b;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .error.active {
+            display: block;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #00ff00;
+            display: none;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1>WEATHER APP</h1>
+            <a href="/logout" style="color: #00ff00; text-decoration: none; font-size: 12px; cursor: pointer; hover: underline;">LOGOUT</a>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="Enter city name..." autocomplete="off">
+            <button onclick="getWeather()">SEARCH</button>
+        </div>
+        
+        <div class="loading" id="loading">Loading...</div>
+        <div class="error" id="error"></div>
+        
+        <div class="weather-box" id="weatherBox">
+            <div class="weather-header" id="cityHeader"></div>
+            
+            <div class="weather-item">
+                <span class="label">Current Time</span>
+                <span class="value" id="time">--:--:--</span>
+            </div>
+            <div class="weather-item">
+                <span class="label">Temperature</span>
+                <span class="value" id="temperature">-- °C</span>
+            </div>
+            <div class="weather-item">
+                <span class="label">Feels Like</span>
+                <span class="value" id="feelsLike">-- °C</span>
+            </div>
+            <div class="weather-item">
+                <span class="label">Wind Speed</span>
+                <span class="value" id="windSpeed">-- m/s</span>
+            </div>
+            <div class="weather-item">
+                <span class="label">Wind Direction</span>
+                <span class="value" id="windDirection">-- °</span>
+            </div>
+            <div class="weather-item">
+                <span class="label">Wind Gust</span>
+                <span class="value" id="windGust">-- m/s</span>
+            </div>
+            <div class="weather-item">
+                <span class="label">Atmospheric Pressure</span>
+                <span class="value" id="pressure">-- hPa</span>
+            </div>
+            <div class="weather-item">
+                <span class="label">Humidity</span>
+                <span class="value" id="humidity">-- %</span>
+            </div>
+            <div class="weather-item">
+                <span class="label">Sunrise</span>
+                <span class="value" id="sunrise">--:--:--</span>
+            </div>
+            <div class="weather-item">
+                <span class="label">Sunset</span>
+                <span class="value" id="sunset">--:--:--</span>
+            </div>
+            <div class="weather-item">
+                <span class="label">Description</span>
+                <span class="value" id="description">--</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function getWeather() {
+            const city = document.getElementById('cityInput').value.trim();
+            
+            if (!city) {
+                showError('Please enter a city name');
+                return;
+            }
+            
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const weatherBox = document.getElementById('weatherBox');
+            
+            loading.classList.add('active');
+            error.classList.remove('active');
+            weatherBox.classList.remove('active');
+            
+            const formData = new FormData();
+            formData.append('city', city);
+            
+            fetch('/weather', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                loading.classList.remove('active');
+                
+                if (data.error) {
+                    showError(data.error);
+                } else {
+                    displayWeather(data);
+                }
+            })
+            .catch(err => {
+                loading.classList.remove('active');
+                showError('An error occurred: ' + err);
+            });
+        }
+        
+        function displayWeather(data) {
+            document.getElementById('cityHeader').textContent = data.city.toUpperCase() + ', ' + data.country;
+            document.getElementById('time').textContent = data.time;
+            document.getElementById('temperature').textContent = data.temperature + ' °C';
+            document.getElementById('feelsLike').textContent = data.feels_like + ' °C';
+            document.getElementById('windSpeed').textContent = data.wind_speed + ' m/s';
+            document.getElementById('windDirection').textContent = data.wind_direction + ' °';
+            document.getElementById('windGust').textContent = data.wind_gust + ' m/s';
+            document.getElementById('pressure').textContent = data.pressure + ' hPa';
+            document.getElementById('humidity').textContent = data.humidity + ' %';
+            document.getElementById('sunrise').textContent = data.sunrise;
+            document.getElementById('sunset').textContent = data.sunset;
+            document.getElementById('description').textContent = data.description;
+            
+            document.getElementById('weatherBox').classList.add('active');
+            document.getElementById('error').classList.remove('active');
+        }
+        
+        function showError(message) {
+            document.getElementById('error').textContent = message;
+            document.getElementById('error').classList.add('active');
+            document.getElementById('weatherBox').classList.remove('active');
+        }
+        
+        // Allow Enter key to search
+        document.getElementById('cityInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                getWeather();
+            }
+        });
+    </script>
+</body>
+</html>

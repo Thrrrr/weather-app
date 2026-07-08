@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: #1a1a1a;
+            border: 2px solid #00ff00;
+            padding: 40px;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+        }
+        
+        h1 {
+            color: #00ff00;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .subtitle {
+            color: #888;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 12px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            color: #00ff00;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #2a2a2a;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        input::placeholder {
+            color: #00ff00;
+            opacity: 0.5;
+        }
+        
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #00ff00;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #00cc00;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        
+        .error {
+            background: #2a0000;
+            color: #ff6b6b;
+            padding: 12px;
+            border: 1px solid #ff6b6b;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 12px;
+        }
+        
+        .demo-creds {
+            background: #1a2a1a;
+            color: #88ff88;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #00ff00;
+            font-size: 11px;
+            text-align: center;
+        }
+        
+        .demo-creds strong {
+            color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>WEATHER APP</h1>
+        <div class="subtitle">--- LOGIN ---</div>
+        
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter username" required autofocus>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" required>
+            </div>
+            
+            <button type="submit">LOGIN</button>
+        </form>
+        
+        <div class="demo-creds">
+            <strong>Demo Credentials:</strong><br>
+            Username: <strong>admin</strong><br>
+            Password: <strong>password123</strong><br><br>
+            (Change these after login!)
+        </div>
+    </div>
+</body>
+</html>
