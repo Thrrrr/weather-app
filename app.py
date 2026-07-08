@@ -13,7 +13,7 @@ VALID_USERS = {
 }
 
 # API key and base URL
-api_key = os.getenv('OPENWEATHER_API_KEY', "24d18b231df4ea0585fbfadb7cc77b2c")
+api_key = os.getenv('OPENWEATHER_API_KEY')
 base_url = "https://api.openweathermap.org/data/2.5/weather?"
 
 @app.route('/login', methods=['GET', 'POST'])
