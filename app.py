@@ -55,13 +55,28 @@ def get_weather():
     if 'user' not in session:
         return {'error': 'Unauthorized'}, 401
     
-    if not api_key:
-        return {'error': 'API key not configured'}, 500
-    
     city_name = request.form.get('city')
     
     if not city_name:
         return {'error': 'Please enter a city name'}
+    
+    if not api_key:
+        return {
+            'city': city_name.strip().title(),
+            'country': 'N/A',
+            'time': '--:--:--',
+            'temperature': '--',
+            'feels_like': '--',
+            'wind_speed': '--',
+            'wind_direction': '--',
+            'wind_gust': '--',
+            'pressure': '--',
+            'humidity': '--',
+            'sunrise': '--:--:--',
+            'sunset': '--:--:--',
+            'description': 'Weather unavailable',
+            'background_image': f"https://source.unsplash.com/1600x900/?{quote(city_name.strip())}"
+        }
     
     # Build the complete URL
     complete_url = base_url + "q=" + city_name + "&appid=" + api_key

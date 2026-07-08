@@ -292,8 +292,12 @@
             document.getElementById('sunset').textContent = data.sunset;
             document.getElementById('description').textContent = data.description;
             
-            const backgroundUrl = data.background_image ? `url('${data.background_image}')` : defaultBackground;
-            document.getElementById('backgroundLayer').style.backgroundImage = backgroundUrl;
+            if (data.background_image) {
+                const encodedUrl = data.background_image.replace(/'/g, "\\'");
+                document.getElementById('backgroundLayer').style.backgroundImage = `url('${encodedUrl}')`;
+            } else {
+                document.getElementById('backgroundLayer').style.backgroundImage = defaultBackground;
+            }
             document.getElementById('overlay').style.display = 'block';
             
             document.getElementById('weatherBox').classList.add('active');
